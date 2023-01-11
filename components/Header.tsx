@@ -25,10 +25,10 @@ function Header(props: HeaderProps) {
               className="text-[0.875em] font-medium text-white bg-purple-900 px-[1em] py-[0.5em] cursor-pointer">Add</Link>
           }
           {false &&
-            <a href="/auth/login"
+            <Link href="/auth/login"
               onClick={() => { }}
               data-testid="logoutBtn"
-              className="text-[0.875em] font-medium text-purple-900 bg-gray-200 px-[1em] py-[0.5em] cursor-pointer">Logout</a>
+              className="text-[0.875em] font-medium text-purple-900 bg-gray-200 px-[1em] py-[0.5em] cursor-pointer">Logout</Link>
           }
         </div>
       </header>
