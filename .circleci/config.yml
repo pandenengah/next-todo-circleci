@@ -7,15 +7,13 @@ orbs:
 
 jobs:
   testing:
-    working_directory: ~/repo/next-circleci/recipe
     # These next lines define a Docker executor: https://circleci.com/docs/2.0/executor-types/
     # A list of available CircleCI Docker Convenience Images are available here: https://circleci.com/developer/images/image/cimg/node
     docker:
       - image: cimg/node:16.17.0-browsers
     steps:
+      - checkout
       - browser-tools/install-browser-tools
-      - checkout:
-          path: ~/repo/next-circleci
       - run:
           command: |
             google-chrome --version
