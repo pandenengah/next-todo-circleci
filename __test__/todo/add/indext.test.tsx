@@ -1,11 +1,11 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom'
-import AddPage from '..';
-import { pipeDateToInputDateTime } from '../../../../utils/date';
+import AddPage from '../../../pages/todo/add';
+import { pipeDateToInputDateTime } from '../../../utils/date';
 import moment from 'moment';
 
 
-jest.mock("../../../../services/fetchTodo")
+jest.mock("../../../services/fetchTodo")
 
 const dateNow = moment().format('YYYY-MM-DDTHH:mm:ssZ')
 const dateTomorrow = moment().add(1, 'day').format('YYYY-MM-DDTHH:mm:ssZ')

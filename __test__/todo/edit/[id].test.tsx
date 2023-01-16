@@ -1,15 +1,14 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom'
-import { pipeDateToInputDateTime } from '../../../../utils/date';
+import { pipeDateToInputDateTime } from '../../../utils/date';
 import moment from 'moment';
-import EditPage from '../[id]';
-import { Todo } from '../../../../models/todo.interface';
-import { Provider } from 'react-redux';
-import { renderWithStore } from '../../../../utils/render-with-store';
-import { AppState } from '../../../../stores/store';
+import EditPage from '../../../pages/todo/edit/[id]';
+import { Todo } from '../../../models/todo.interface';
+import { renderWithStore } from '../../../utils/render-with-store';
+import { AppState } from '../../../stores/store';
 
 
-jest.mock("../../../../services/fetchTodo")
+jest.mock("../../../services/fetchTodo")
 
 const dateNow = moment().format('YYYY-MM-DDTHH:mm:ssZ')
 const dateTomorrow = moment().add(1, 'day').format('YYYY-MM-DDTHH:mm:ssZ')

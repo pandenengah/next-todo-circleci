@@ -1,15 +1,15 @@
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom'
-import { User } from '../../../models/user.interface';
-import { FetchResult } from '../../../models/fetch-result.interface';
-import TodoPage from '..';
-import { renderWithStore } from '../../../utils/render-with-store';
-import { AppState } from '../../../stores/store';
-import { Todo } from '../../../models/todo.interface';
-import fetchTodo from '../../../services/fetchTodo';
+import { User } from '../../models/user.interface';
+import { FetchResult } from '../../models/fetch-result.interface';
+import TodoPage from '../../pages/todo';
+import { renderWithStore } from '../../utils/render-with-store';
+import { AppState } from '../../stores/store';
+import { Todo } from '../../models/todo.interface';
+import fetchTodo from '../../services/fetchTodo';
 
 
-jest.mock("../../../services/fetchTodo")
+jest.mock("../../services/fetchTodo")
 
 const initalStateStoreMock: AppState = {
   selectedTodo: { value: {} }
