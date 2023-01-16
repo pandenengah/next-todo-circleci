@@ -7,42 +7,55 @@ import { handleFetchError } from "../utils/handle-fetch-error";
 import { Todo } from "../models/todo.interface";
 import { isServer } from "../utils/render";
 import toast from "react-hot-toast";
+import authStorage from "./authStorage";
+import { GetServerSidePropsContext, PreviewData } from "next";
+import { ParsedUrlQuery } from "querystring";
 
 const httpsAgent = new https.Agent({
   rejectUnauthorized: false,
 });
 
-const getTodos = async (sortType = ""): Promise<FetchResult> => {
-  const url = env.apiUrl + 'todos?SortType=' + sortType
-  
+const getTodos = async (sortType = "", context: GetServerSidePropsContext<ParsedUrlQuery, PreviewData> | null = null): Promise<FetchResult> => {  
+  const url = process.env.NEXT_PUBLIC_API_URL + 'todos?SortType=' + sortType
+
   try {
-    const response = await axios.get(url, { httpsAgent })
-    
+    const response = await axios.get(url, {
+      httpsAgent,
+      headers: {
+        'Authorization': `Bearer ${authStorage.getUserAccessToken(context)}`
+      }
+    })
+
     return {
       rawData: response.data
     }
   }
   catch (e) {
     const errors = handleFetchError(e)
-    if (!isServer()) {      
+    if (!isServer()) {
       toast.error(errors.errorMessage)
     }
     return errors
   }
 }
 
-const getTodo = async (id: string): Promise<FetchResult> => {
-  const url = env.apiUrl + 'todos/' + id
-  
+const getTodo = async (id: string, context: GetServerSidePropsContext<ParsedUrlQuery, PreviewData> | null = null): Promise<FetchResult> => {
+  const url = process.env.NEXT_PUBLIC_API_URL + 'todos/' + id
+
   try {
-    const response = await axios.get(url, { httpsAgent })
+    const response = await axios.get(url, {
+      httpsAgent,
+      headers: {
+        'Authorization': `Bearer ${authStorage.getUserAccessToken(context)}`
+      }
+    })
     return {
       rawData: response.data
     }
   }
   catch (e) {
     const errors = handleFetchError(e)
-    if (!isServer()) {      
+    if (!isServer()) {
       toast.error(errors.errorMessage)
     }
     return errors
@@ -50,10 +63,10 @@ const getTodo = async (id: string): Promise<FetchResult> => {
 }
 
 const putTodos = async (id: string, body: Todo): Promise<FetchResult> => {
-  const url = env.apiUrl + 'todos/' + id
+  const url = process.env.NEXT_PUBLIC_API_URL + 'todos/' + id
   const formData = new FormData()
   formData.append('Description', body.description + '')
-  formData.append('Deadline', moment(body.deadline + '').utc().format())
+  formData.append('Deadline', moment(body.deadline).utc().format())
   formData.append('Done', body.done + '')
   if (body.snapshootImageFile?.length) {
     formData.append('SnapshootImage', body.snapshootImageFile[0])
@@ -63,6 +76,7 @@ const putTodos = async (id: string, body: Todo): Promise<FetchResult> => {
     const response = await axios.put(url, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
+        'Authorization': `Bearer ${authStorage.getUserAccessToken()}`
       },
     })
     return {
@@ -70,7 +84,7 @@ const putTodos = async (id: string, body: Todo): Promise<FetchResult> => {
     }
   } catch (e) {
     const errors = handleFetchError(e)
-    if (!isServer()) {      
+    if (!isServer()) {
       toast.error(errors.errorMessage)
     }
     return errors
@@ -78,10 +92,10 @@ const putTodos = async (id: string, body: Todo): Promise<FetchResult> => {
 }
 
 const postTodos = async (body: Todo): Promise<FetchResult> => {
-  const url = env.apiUrl + 'todos'
+  const url = process.env.NEXT_PUBLIC_API_URL + 'todos'
   const formData = new FormData()
   formData.append('Description', body.description + '')
-  formData.append('Deadline', moment(body.deadline + '').utc().format())
+  formData.append('Deadline', moment(body.deadline).utc().format())
   if (body.snapshootImageFile?.length) {
     formData.append('SnapshootImage', body.snapshootImageFile[0])
   }
@@ -89,6 +103,7 @@ const postTodos = async (body: Todo): Promise<FetchResult> => {
     const response = await axios.post(url, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
+        'Authorization': `Bearer ${authStorage.getUserAccessToken()}`
       },
     })
     return {
@@ -96,7 +111,7 @@ const postTodos = async (body: Todo): Promise<FetchResult> => {
     }
   } catch (e) {
     const errors = handleFetchError(e)
-    if (!isServer()) {      
+    if (!isServer()) {
       toast.error(errors.errorMessage)
     }
     return errors
@@ -104,15 +119,19 @@ const postTodos = async (body: Todo): Promise<FetchResult> => {
 }
 
 const deleteTodos = async (id: string): Promise<FetchResult> => {
-  const url = env.apiUrl + 'todos/' + id
+  const url = process.env.NEXT_PUBLIC_API_URL + 'todos/' + id
   try {
-    const response = await axios.delete(url)
+    const response = await axios.delete(url, {
+      headers: {
+        'Authorization': `Bearer ${authStorage.getUserAccessToken()}`
+      }
+    })
     return {
       rawData: response.data
     }
   } catch (e) {
     const errors = handleFetchError(e)
-    if (!isServer()) {      
+    if (!isServer()) {
       toast.error(errors.errorMessage)
     }
     return errors

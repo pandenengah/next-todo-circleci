@@ -1,5 +1,5 @@
 export const env = {
-  apiUrl: 'https://localhost:44365/api/public/',
+  apiUrl: 'https://localhost:44365/api/',
   imagePath: 'https://localhost:44365/',
-  userLocalStorageName: 'REACT_TODO_AUTH'
+  userStorageName: 'NEXT_TODO_AUTH'
 }

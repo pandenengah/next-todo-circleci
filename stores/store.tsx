@@ -1,13 +1,13 @@
 import { Action, combineReducers, configureStore, ThunkAction } from "@reduxjs/toolkit"
 import { createWrapper } from "next-redux-wrapper";
 import { selectedTodoSlice } from "./features/selectedTodoSlice";
-import { todoSortTypeSlice } from "./features/todoSortTypeSlice";
 
-const store = configureStore({
-  reducer: {
-    [selectedTodoSlice.name]: selectedTodoSlice.reducer,
-    [todoSortTypeSlice.name]: todoSortTypeSlice.reducer,
-  },
+export const reducers = {
+  [selectedTodoSlice.name]: selectedTodoSlice.reducer
+}
+
+export const store = configureStore({
+  reducer: reducers,
   devTools: true
 })
 

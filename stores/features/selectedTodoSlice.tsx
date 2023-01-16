@@ -20,13 +20,13 @@ export const selectedTodoSlice = createSlice({
       state.value = action.payload
     },
   },
-  extraReducers: {
-    [HYDRATE]: (state, action) => {
+  extraReducers: builder => {
+    builder.addCase(HYDRATE, (state, action: any) => {
       return {
         ...state,
         ...action.payload.selectedTodo,
       };
-    },
+    })
   }
 })
 

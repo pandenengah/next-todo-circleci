@@ -1,0 +1,10 @@
+.fadeOnlyAppear-appear {opacity: 0;}
+.fadeOnlyAppear-appear-active {opacity: 1;transition: opacity 500ms ease;}
+.fadeOnlyAppear-enter-done {opacity: 1;}
+
+.fadeOut-appear {opacity: 0;}
+.fadeOut-appear-active {opacity: 1;transition: opacity 500ms ease;}
+.fadeOut-enter-done {opacity: 1;}
+.fadeOut-exit {opacity: 1;}
+.fadeOut-exit-active {opacity: 0;transition: opacity 500ms ease;}
+.fadeOut-exit-done {opacity: 0;}
