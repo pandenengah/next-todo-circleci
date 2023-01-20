@@ -1,7 +1,6 @@
 import moment from "moment";
 import * as https from "https";
 import { FetchResult } from "../models/fetch-result.interface";
-import { env } from "../environments/env";
 import axios from "axios";
 import { handleFetchError } from "../utils/handle-fetch-error";
 import { Todo } from "../models/todo.interface";
@@ -16,7 +15,7 @@ const httpsAgent = new https.Agent({
 });
 
 const getTodos = async (sortType = "", context: GetServerSidePropsContext<ParsedUrlQuery, PreviewData> | null = null): Promise<FetchResult> => {  
-  const url = process.env.NEXT_PUBLIC_API_URL + 'todos?SortType=' + sortType
+  const url = process.env.NEXT_PUBLIC_API_URL + 'todos?sortType=' + sortType
 
   try {
     const response = await axios.get(url, {
@@ -65,11 +64,11 @@ const getTodo = async (id: string, context: GetServerSidePropsContext<ParsedUrlQ
 const putTodos = async (id: string, body: Todo): Promise<FetchResult> => {
   const url = process.env.NEXT_PUBLIC_API_URL + 'todos/' + id
   const formData = new FormData()
-  formData.append('Description', body.description + '')
-  formData.append('Deadline', moment(body.deadline).utc().format())
-  formData.append('Done', body.done + '')
+  formData.append('description', body.description + '')
+  formData.append('deadline', moment(body.deadline).utc().format())
+  formData.append('done', body.done + '')
   if (body.snapshootImageFile?.length) {
-    formData.append('SnapshootImage', body.snapshootImageFile[0])
+    formData.append('snapshootImage', body.snapshootImageFile[0])
   }
 
   try {
@@ -94,10 +93,10 @@ const putTodos = async (id: string, body: Todo): Promise<FetchResult> => {
 const postTodos = async (body: Todo): Promise<FetchResult> => {
   const url = process.env.NEXT_PUBLIC_API_URL + 'todos'
   const formData = new FormData()
-  formData.append('Description', body.description + '')
-  formData.append('Deadline', moment(body.deadline).utc().format())
+  formData.append('description', body.description + '')
+  formData.append('deadline', moment(body.deadline).utc().format())
   if (body.snapshootImageFile?.length) {
-    formData.append('SnapshootImage', body.snapshootImageFile[0])
+    formData.append('snapshootImage', body.snapshootImageFile[0])
   }
   try {
     const response = await axios.post(url, formData, {

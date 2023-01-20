@@ -103,7 +103,7 @@ describe('TodoPage', () => {
 
   it('should render user full name', async () => {
     renderWithStore(
-      <TodoPage initialTodos={[]} sortType='acs' user={userMock} />,
+      <TodoPage initialErrorMessage='' initialTodos={[]} sortType='acs' user={userMock} />,
       initalStateStoreMock
     )
 
@@ -113,7 +113,7 @@ describe('TodoPage', () => {
 
   it('should not render list of todo', async () => {
     renderWithStore(
-      <TodoPage initialTodos={[]} sortType='acs' user={userMock} />,
+      <TodoPage initialErrorMessage='' initialTodos={[]} sortType='acs' user={userMock} />,
       initalStateStoreMock
     )
 
@@ -123,7 +123,7 @@ describe('TodoPage', () => {
 
   it('should render list of todo', async () => {
     renderWithStore(
-      <TodoPage initialTodos={todosMock} sortType='acs' user={userMock} />,
+      <TodoPage initialErrorMessage='' initialTodos={todosMock} sortType='acs' user={userMock} />,
       initalStateStoreMock
     )
 
@@ -133,7 +133,7 @@ describe('TodoPage', () => {
 
   it('should render more list of todo', async () => {
     renderWithStore(
-      <TodoPage initialTodos={todosMock} sortType='acs' user={userMock} />,
+      <TodoPage initialErrorMessage='' initialTodos={todosMock} sortType='acs' user={userMock} />,
       initalStateStoreMock
     )
 
@@ -143,7 +143,7 @@ describe('TodoPage', () => {
 
   it('should render list by asc', async () => {
     renderWithStore(
-      <TodoPage initialTodos={todosMock} sortType='asc' user={userMock} />,
+      <TodoPage initialErrorMessage='' initialTodos={todosMock} sortType='asc' user={userMock} />,
       initalStateStoreMock
     )
 
@@ -156,7 +156,7 @@ describe('TodoPage', () => {
 
   it('should render list by desc', async () => {
     renderWithStore(
-      <TodoPage initialTodos={todosDescMock} sortType='desc' user={userMock} />,
+      <TodoPage initialErrorMessage='' initialTodos={todosDescMock} sortType='desc' user={userMock} />,
       initalStateStoreMock
     )
 
@@ -169,7 +169,7 @@ describe('TodoPage', () => {
 
   it('should delete todo', async () => {
     renderWithStore(
-      <TodoPage initialTodos={todosMock} sortType='asc' user={userMock} />,
+      <TodoPage initialErrorMessage='' initialTodos={todosMock} sortType='asc' user={userMock} />,
       initalStateStoreMock
     )
 
@@ -186,41 +186,55 @@ describe('TodoPage', () => {
 
   it('should update todo tobe done', async () => {
     renderWithStore(
-      <TodoPage initialTodos={todosMock} sortType='asc' user={userMock} />,
+      <TodoPage initialErrorMessage='' initialTodos={todosMock} sortType='asc' user={userMock} />,
       initalStateStoreMock
     )
 
-    let editBtns = await screen.findAllByTestId("inputForEdit") as HTMLInputElement[];
+    await waitFor(async () => {
+      let editBtns = await screen.findAllByTestId("inputForEdit") as HTMLInputElement[];
+      expect(editBtns[0].checked).toBeFalsy()
+      
+      let descElms = screen.getAllByTestId("descriptionElm")
+      expect(descElms[0]).not.toHaveClass('line-through')
+    })
 
+    let editBtns = await screen.findAllByTestId("inputForEdit") as HTMLInputElement[];
     fetchTodo.getTodos = jest.fn().mockResolvedValue(resTodosAfterUpdateToDoneMock)
     fireEvent.click(editBtns[0])
 
     await waitFor(async () => {
       editBtns = await screen.findAllByTestId("inputForEdit")
       expect(editBtns[0].checked).toBeTruthy()
-    })
 
-    const descElms = screen.getAllByTestId("descriptionElm")
-    expect(descElms[0]).toHaveClass('line-through')
+      let descElms = screen.getAllByTestId("descriptionElm")
+      expect(descElms[0]).toHaveClass('line-through')
+    })
   });
 
   it('should update todo tobe undone', async () => {
     renderWithStore(
-      <TodoPage initialTodos={todosMock} sortType='asc' user={userMock} />,
+      <TodoPage initialErrorMessage='' initialTodos={todosMock} sortType='asc' user={userMock} />,
       initalStateStoreMock
     )
 
-    let editBtns = await screen.findAllByTestId("inputForEdit") as HTMLInputElement[];
+    await waitFor(async () => {
+      let editBtns = await screen.findAllByTestId("inputForEdit") as HTMLInputElement[];
+      expect(editBtns[1].checked).toBeTruthy()
+      
+      let descElms = screen.getAllByTestId("descriptionElm")
+      expect(descElms[1]).toHaveClass('line-through')
+    })
 
+    let editBtns = await screen.findAllByTestId("inputForEdit") as HTMLInputElement[];
     fetchTodo.getTodos = jest.fn().mockResolvedValue(resTodosAfterUpdateToUndoneMock)
     fireEvent.click(editBtns[1])
 
     await waitFor(async () => {
       editBtns = await screen.findAllByTestId("inputForEdit")
-      expect(editBtns[0].checked).toBeFalsy()
-    })
+      expect(editBtns[1].checked).toBeFalsy()
 
-    const descElms = screen.getAllByTestId("descriptionElm")
-    expect(descElms[0]).not.toHaveClass('line-through')
+      let descElms = screen.getAllByTestId("descriptionElm")
+      expect(descElms[1]).not.toHaveClass('line-through')
+    })
   });
 })

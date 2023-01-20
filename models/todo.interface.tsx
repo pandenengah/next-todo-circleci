@@ -7,4 +7,5 @@ export interface Todo {
   snapshootImageFile?: FileList
   isDeleting?: boolean
   isDeleteDone?: boolean
+  isUpdating?: boolean
 }
